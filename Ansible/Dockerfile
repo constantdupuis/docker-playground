@@ -1,9 +1,15 @@
 # Based on Ubuntu
-FROM ubuntu
+FROM alpine
 
-# Install Ansible
-RUN apt update  \
-    && apt install -y python3  \
-    && apt install -y python3-pip  \
-    && pip3 install ansible
+# OpenRC manages the services, startup and shutdown of a host
+RUN apk add openrc 
+# ansible to remote managment
+RUN apk add ansible
+# openssh, ssh client, server and tools
+RUN apk add openssh
+RUN rc-update add sshd
+RUN /etc/init.d/sshd start
+
+# Expose ssh port
+EXPOSE 22
 
